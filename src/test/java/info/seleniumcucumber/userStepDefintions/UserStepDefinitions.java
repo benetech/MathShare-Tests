@@ -12,17 +12,22 @@ import info.seleniumcucumber.methods.BaseTest;
 
 public class UserStepDefinitions implements BaseTest {
 	
-	protected WebDriver driver = DriverUtil.getDefaultDriver();
+	private WebDriver driver = DriverUtil.getDefaultDriver();
 	
 	@Given("^I should get logged-in$")
-	public void should_logged_in() throws Throwable {
+	public void should_logged_in() {
 		
 		By selection = By.id("flash");
-        (new WebDriverWait(driver, 30)).until(
+
+		new WebDriverWait(driver, 30).until(
                 ExpectedConditions.visibilityOfElementLocated(selection));
+
 		String msg = driver.findElement(By.id("flash")).getText();
-		if(!msg.isEmpty())
+
+		if(!msg.isEmpty()) {
 			msg = msg.split("\n")[0].trim();
+		}
+
 		Assert.assertEquals("You logged into a secure area!", msg);
 	}
 }
