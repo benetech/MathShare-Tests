@@ -1,12 +1,10 @@
-Feature: Login
-        As a user I should able to login into my app
- 
- Scenario: I login with valid credential
- 		Given I navigate to "http://the-internet.herokuapp.com/login"
-        And I enter "tomsmith" into input field having id "username"
-        And I enter "SuperSecretPassword!" into input field having id "password"
-        When I click on element having class "radius"
-        Then I should get logged-in
+Feature: Solve Problem
+  As a user I should able to solve a math problem
+
+ Scenario: Open a problem
+    Given I navigate to "https://matheditor-qa.diagramcenter.org/"
+    When I click on element having xpath "(//span[contains(@class, 'btn-huge') and contains(@class, 'navItemButton')])[2]"
+    Then element having id "workArea" should be present
  
  Scenario: Close browser
- 		Then I close browser 
+    Then I close browser
