@@ -2,7 +2,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
     <modelVersion>4.0.0</modelVersion>
-    <groupId>sc-java-testing</groupId>
+    <groupId>org.benetech</groupId>
     <artifactId>matshare-selenium-tests</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>MathShare Selenium Tests</name>
@@ -54,6 +54,12 @@
             <version>1.0.1-beta</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.deque</groupId>
+            <artifactId>axe-selenium</artifactId>
+            <version>2.1</version>
+        </dependency>
+
         <!-- These are the Appium dependencies -->
         <dependency>
             <groupId>io.appium</groupId>
@@ -73,7 +79,6 @@
                     <source>1.8</source>
                     <target>1.8</target>
                     <compilerArgument>-Werror</compilerArgument>
-
                 </configuration>
             </plugin>
         </plugins>

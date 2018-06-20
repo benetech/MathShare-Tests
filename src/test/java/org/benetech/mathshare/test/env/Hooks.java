@@ -1,4 +1,4 @@
-package env;
+package org.benetech.mathshare.test.env;
 
 import cucumber.api.Scenario;
 import cucumber.api.java.After;

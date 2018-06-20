@@ -1,4 +1,4 @@
-package env;
+package org.benetech.mathshare.test.env;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -14,13 +14,11 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.openqa.selenium.firefox.FirefoxOptions;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.remote.ErrorHandler;
-import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.safari.SafariDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.MalformedURLException;
@@ -31,7 +29,8 @@ import java.util.concurrent.TimeUnit;
 
 public class DriverUtil {
     public static long DEFAULT_WAIT = 20;
-    protected static WebDriver driver = null;
+
+    private static WebDriver driver = null;
 
     private static String currentPath = System.getProperty("user.dir");
     private static Properties prop = new Properties();
@@ -82,11 +81,6 @@ public class DriverUtil {
                             System.exit(0);
                     }
                     break;
-
-                case "browserstack":
-                    driver = browserStackDriver();
-                    break;
-
                 case "desktop":
                     DesiredCapabilities capabilities = DesiredCapabilities.firefox();
                     capabilities.setJavascriptEnabled(true);
@@ -103,36 +97,6 @@ public class DriverUtil {
         }
 
         return driver;
-    }
-
-    /*
-
-    /*
-     * Returns browserStack remote driver instance by reading browserStack configuration
-     * from platformConfigs/browserstack.properties
-     * 
-     * @param DesiredCapabilities create capabilities by reading browser config.
-     * @return RemoteWebDriver
-     */
-    private static WebDriver browserStackDriver() throws IOException {
-        URL remoteDriverURL;
-        try (InputStream input = new FileInputStream(currentPath +
-                "/src/main/java/platformConfigs/browserstack.properties")) {
-
-            prop.load(input);
-
-            String url = prop.getProperty("protocol") +
-                    "://" +
-                    prop.getProperty("username") +
-                    ":" +
-                    prop.getProperty("access_key") +
-                    prop.getProperty("url");
-
-            input.close();
-            prop.clear();
-            remoteDriverURL = new URL(url);
-        }
-        return new RemoteWebDriver(remoteDriverURL, capability);
     }
 
     private static WebDriver androidDriver(DesiredCapabilities capabilities) throws MalformedURLException {
@@ -201,13 +165,6 @@ public class DriverUtil {
     private static DesiredCapabilities getCapability(InputStream input) throws IOException {
         DesiredCapabilities capability = new DesiredCapabilities();
         prop.load(input);
-        if (prop.containsKey("app")) {
-            String appName = prop.getProperty("app");
-            if (!appName.contains("sauce-storage")) {
-                String appPath = currentPath + "/src/main/java/appUnderTest/" + appName;
-                prop.setProperty("app", appPath);
-            }
-        }
 
         // set capabilities
         Enumeration<Object> enuKeys = prop.keys();

@@ -1,4 +1,4 @@
-package env;
+package org.benetech.mathshare.test;
 
 import org.junit.runner.RunWith;
 
