@@ -1,4 +1,4 @@
-package org.benetech.mathshare.test.env;
+package env;
 
 import io.appium.java_client.android.AndroidDriver;
 import io.appium.java_client.ios.IOSDriver;
@@ -26,6 +26,8 @@ import java.net.URL;
 import java.util.Enumeration;
 import java.util.Properties;
 import java.util.concurrent.TimeUnit;
+
+// Note: this class has to stay in the 'env' package to work with selenium-cucumber-java.
 
 public class DriverUtil {
     public static long DEFAULT_WAIT = 20;

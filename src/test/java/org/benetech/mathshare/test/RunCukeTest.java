@@ -15,7 +15,7 @@ import cucumber.api.junit.Cucumber;
 		features = "classpath:features",
 		glue = {
 			"info.seleniumcucumber.stepdefinitions",   // predefined step definitions package
-			"info.seleniumcucumber.userStepDefintions" // user step definitions package
+			"org.benetech.mathshare.test.steps" // user step definitions package
 	    }
 )
 public class RunCukeTest {
