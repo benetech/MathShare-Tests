@@ -1,22 +1,22 @@
 package org.benetech.mathshare.test.steps;
+
 import cucumber.api.java.en.Then;
+import env.DriverUtil;
+import info.seleniumcucumber.methods.BaseTest;
 import org.benetch.mathshare.test.acessibility.AccessibilityChecker;
 import org.benetch.mathshare.test.acessibility.AccessibilityResults;
 import org.benetch.mathshare.test.acessibility.axe.Axe2AccessibilityChecker;
 import org.openqa.selenium.WebDriver;
 
-import env.DriverUtil;
-import info.seleniumcucumber.methods.BaseTest;
-
 import static org.junit.Assert.fail;
 
 
-public class UserStepDefinitions implements BaseTest {
+public class AccessibilityStepDefinitions implements BaseTest {
 
-	private WebDriver driver = DriverUtil.getDefaultDriver();
-	
-	@Then("^Check Accessibility: max (\\d+) violations$")
-	public void checkAccessibility(int maxViolations) {
+    private WebDriver driver = DriverUtil.getDefaultDriver();
+
+    @Then("^Check Accessibility: max (\\d+) violations$")
+    public void checkAccessibility(int maxViolations) {
         AccessibilityChecker accessibilityChecker = new Axe2AccessibilityChecker();
         AccessibilityResults results = accessibilityChecker.performCheck(driver);
 
@@ -26,5 +26,5 @@ public class UserStepDefinitions implements BaseTest {
             fail(String.format("Too many accessibility violations: %d. The maximum is: %d.",
                     results.countViolations(), maxViolations));
         }
-	}
+    }
 }
