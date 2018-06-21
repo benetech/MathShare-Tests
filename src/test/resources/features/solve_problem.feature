@@ -1,5 +1,5 @@
 Feature: Solve Problem
-  As a user I should able to solve a math problem
+  As a user I should be able to solve a math problem
 
  Scenario: Open a problem
     Given I navigate to "https://matheditor-qa.diagramcenter.org/"
