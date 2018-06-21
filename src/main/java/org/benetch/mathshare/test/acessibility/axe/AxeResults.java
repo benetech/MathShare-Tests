@@ -1,12 +1,13 @@
-package org.benetch.mathshare.test;
+package org.benetch.mathshare.test.acessibility.axe;
 
 import com.deque.axe.AXE;
+import org.benetch.mathshare.test.acessibility.AccessibilityResults;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.PrintStream;
 
-public class AxeResults {
+public class AxeResults implements AccessibilityResults {
 
     private static final String PASSES = "passes";
     private static final String INCOMPLETE = "incomplete";
@@ -18,7 +19,7 @@ public class AxeResults {
     private final JSONArray inapplicable;
     private final JSONArray violations;
 
-    public AxeResults(JSONObject jsonObj) {
+    AxeResults(JSONObject jsonObj) {
         passes = jsonObj.optJSONArray(PASSES);
         incomplete = jsonObj.optJSONArray(INCOMPLETE);
         inapplicable = jsonObj.optJSONArray(INAPPLICABLE);
@@ -37,21 +38,24 @@ public class AxeResults {
         return inapplicable == null ? 0 : inapplicable.length();
     }
 
+    @Override
     public int countViolations() {
         return violations == null ? 0 : violations.length();
     }
 
+    @Override
     public boolean hasViolations() {
         return countViolations() > 0;
     }
 
+    @Override
     public void print(PrintStream out) {
-        out.print(String.format("Found %d accessibility violations. %d rules passed. " +
+        out.println(String.format("Found %d accessibility violations. %d rules passed. " +
                 "%d rules incompletely tested, %d rules inapplicable.", countViolations(), countPasses(),
                 countIncomplete(), countInapplicable()));
 
         if (hasViolations()) {
-            out.print(AXE.report(violations));
+            out.println(AXE.report(violations));
         }
     }
 }
