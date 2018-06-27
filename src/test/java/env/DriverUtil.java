@@ -43,16 +43,6 @@ public class DriverUtil {
             return driver;
         }
 
-        Properties webDriverProps = new Properties();
-
-        try (InputStream in = DriverUtil.class.getClassLoader().getResourceAsStream("webdriver.properties")) {
-            webDriverProps.load(in);
-            webDriverProps.putAll(System.getProperties());
-            System.setProperties(webDriverProps);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load WebDriver properties", e);
-        }
-
         String enviroment = "desktop";
         String platform = "";
         String config = System.getProperty("config", "");

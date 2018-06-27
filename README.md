@@ -31,7 +31,7 @@ Currently [axe 2](https://axe-core.org/) is being used as the accessibility chec
 Running
 -------
 
-* Run with parameters specifying your webdriver
+* Run with parameters specifying a browser and a webdriver's path
 
 Example:
 ```bash
