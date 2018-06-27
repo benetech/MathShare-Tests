@@ -108,22 +108,19 @@ public class DriverUtil {
     }
 
     private static WebDriver safariDriver() {
-        DesiredCapabilities capabilities;
-        capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.safari());
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.safari());
         driver = new SafariDriver(capabilities);
         return driver;
     }
 
     private static WebDriver edgeDriver() {
-        DesiredCapabilities capabilities;
-        capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.edge());
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.edge());
         driver = new EdgeDriver(capabilities);
         return driver;
     }
 
     private static WebDriver firefoxDriver(boolean headless) {
-        DesiredCapabilities capabilities;
-        capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.firefox());
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.firefox());
         final FirefoxOptions options = new FirefoxOptions();
         if (headless) {
             options.addArguments("-headless", "-safe-mode");
@@ -134,8 +131,7 @@ public class DriverUtil {
     }
 
     private static WebDriver chromeDriver(boolean headless) {
-        DesiredCapabilities capabilities;
-        capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.chrome());
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.chrome());
         final ChromeOptions chromeOptions = new ChromeOptions();
         if (headless) {
             chromeOptions.addArguments("--headless");
@@ -161,7 +157,7 @@ public class DriverUtil {
             case "firefox":
                 return firefoxDriver(headless);
             default:
-                throw new RuntimeException(String.format("Not supported browser: %s", preferredDriver));
+                throw new IllegalArgumentException(String.format("Browser not supported: %s", preferredDriver));
         }
     }
 
