@@ -31,9 +31,24 @@ Currently [axe 2](https://axe-core.org/) is being used as the accessibility chec
 Running
 -------
 
-* Make sure webdriver.properties contains correct values (TODO improve)
-* Run:
+* Run with parameters specifying a browser and a webdriver's path
 
+Example:
 ```bash
-mvn clean test
+# for Firefox
+mvn clean test -Dbrowser=firefox -Dwebdriver.gecko.driver=/home/user/geckodriver
+# for Chrome
+mvn clean test -Dbrowser=chrome -Dwebdriver.chrome.driver=/home/user/chromedriver
+# for Safari
+mvn clean test -Dbrowser=safari -Dwebdriver.safari.driver=/home/user/safaridriver
+# for Edge
+mvn clean test -Dbrowser=edge -Dwebdriver.edge.driver=/home/user/MicrosoftWebDriver.exe
+```
+
+You can run browsers Firefox and Chrome in headless mode (tests are performed without opened browser window)
+```bash
+# for Firefox
+mvn clean test -Dbrowser=firefox -Dwebdriver.gecko.driver=/home/user/geckodriver -Dheadless=true
+# for Chrome
+mvn clean test -Dbrowser=chrome -Dwebdriver.chrome.driver=/home/user/chromedriver -Dheadless=true
 ```

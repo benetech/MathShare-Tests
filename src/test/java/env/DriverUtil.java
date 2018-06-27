@@ -43,16 +43,6 @@ public class DriverUtil {
             return driver;
         }
 
-        Properties webDriverProps = new Properties();
-
-        try (InputStream in = DriverUtil.class.getClassLoader().getResourceAsStream("webdriver.properties")) {
-            webDriverProps.load(in);
-            webDriverProps.putAll(System.getProperties());
-            System.setProperties(webDriverProps);
-        } catch (IOException e) {
-            throw new IllegalStateException("Unable to load WebDriver properties", e);
-        }
-
         String enviroment = "desktop";
         String platform = "";
         String config = System.getProperty("config", "");
@@ -84,10 +74,7 @@ public class DriverUtil {
                     }
                     break;
                 case "desktop":
-                    DesiredCapabilities capabilities = DesiredCapabilities.firefox();
-                    capabilities.setJavascriptEnabled(true);
-                    capabilities.setCapability("takesScreenshot", true);
-                    driver = chooseDriver(capabilities);
+                    driver = chooseDriver();
                     driver.manage().timeouts().setScriptTimeout(DEFAULT_WAIT, TimeUnit.SECONDS);
                     driver.manage().window().maximize();
                     break;
@@ -99,6 +86,13 @@ public class DriverUtil {
         }
 
         return driver;
+    }
+
+    private static DesiredCapabilities setupDefaultDesktopCapabilities(DesiredCapabilities capabilities) {
+        DesiredCapabilities desiredCapabilities = new DesiredCapabilities(capabilities);
+        desiredCapabilities.setJavascriptEnabled(true);
+        desiredCapabilities.setCapability("takesScreenshot", true);
+        return desiredCapabilities;
     }
 
     private static WebDriver androidDriver(DesiredCapabilities capabilities) throws MalformedURLException {
@@ -113,35 +107,57 @@ public class DriverUtil {
         return driver;
     }
 
-    private static WebDriver chooseDriver(DesiredCapabilities capabilities) {
+    private static WebDriver safariDriver() {
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.safari());
+        driver = new SafariDriver(capabilities);
+        return driver;
+    }
+
+    private static WebDriver edgeDriver() {
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.edge());
+        driver = new EdgeDriver(capabilities);
+        return driver;
+    }
+
+    private static WebDriver firefoxDriver(boolean headless) {
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.firefox());
+        final FirefoxOptions options = new FirefoxOptions();
+        if (headless) {
+            options.addArguments("-headless", "-safe-mode");
+        }
+        capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
+        driver = new FirefoxDriver(capabilities);
+        return driver;
+    }
+
+    private static WebDriver chromeDriver(boolean headless) {
+        DesiredCapabilities capabilities = setupDefaultDesktopCapabilities(DesiredCapabilities.chrome());
+        final ChromeOptions chromeOptions = new ChromeOptions();
+        if (headless) {
+            chromeOptions.addArguments("--headless");
+        }
+        capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
+        driver = new ChromeDriver(capabilities);
+        ErrorHandler handler = new ErrorHandler();
+        handler.setIncludeServerErrors(false);
+        return driver;
+    }
+
+    private static WebDriver chooseDriver() {
         String preferredDriver = System.getProperty("browser", "Firefox");
         boolean headless = System.getProperty("headless", "false").equals("true");
 
         switch (preferredDriver.toLowerCase()) {
             case "safari":
-                driver = new SafariDriver();
-                return driver;
+                return safariDriver();
             case "edge":
-                driver = new EdgeDriver();
-                return driver;
+                return edgeDriver();
             case "chrome":
-                final ChromeOptions chromeOptions = new ChromeOptions();
-                if (headless) {
-                    chromeOptions.addArguments("--headless");
-                }
-                capabilities.setCapability(ChromeOptions.CAPABILITY, chromeOptions);
-                driver = new ChromeDriver(capabilities);
-                ErrorHandler handler = new ErrorHandler();
-                handler.setIncludeServerErrors(false);
-                return driver;
+                return chromeDriver(headless);
+            case "firefox":
+                return firefoxDriver(headless);
             default:
-                FirefoxOptions options = new FirefoxOptions();
-                if (headless) {
-                    options.addArguments("-headless", "-safe-mode");
-                }
-                capabilities.setCapability(FirefoxOptions.FIREFOX_OPTIONS, options);
-                driver = new FirefoxDriver(capabilities);
-                return driver;
+                throw new IllegalArgumentException(String.format("Browser not supported: %s", preferredDriver));
         }
     }
 
